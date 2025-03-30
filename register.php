@@ -1,3 +1,27 @@
+<?php
+include 'database.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = trim($_POST["username"]);
+    $email = trim($_POST["email"]);
+    $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
+    $repassword = password_hash($_POST["repassword"], PASSWORD_DEFAULT);
+
+    if ($repassword != $password) {
+        header("Location: register.php?signup=fail");
+    }
+
+    try {
+        $stmt = $pdo->prepare("INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)");
+        $stmt->execute([$username, $email, $password]);
+        header("Location: login.php?signup=success");
+        exit();
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,24 +53,24 @@
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
         <div class="card p-4 shadow-lg bg-dark text-white" style="max-width: 400px; width: 100%; border-radius: 12px;">
             <h2 class="text-center text-warning fw-bold">Create an Account</h2>
-            <form>
+            <form method="post">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control form-control-lg" id="username"
+                    <input type="text" class="form-control form-control-lg" name="username" id="username"
                         placeholder="Choose a username">
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control form-control-lg" id="email" placeholder="Enter your email">
+                    <input type="email" class="form-control form-control-lg" name="email" id="email" placeholder="Enter your email">
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control form-control-lg" id="password"
+                    <input type="password" class="form-control form-control-lg" name="password" id="password"
                         placeholder="Enter your password">
                 </div>
                 <div class="mb-3">
                     <label for="repassword" class="form-label">Confirm Password</label>
-                    <input type="password" class="form-control form-control-lg" id="repassword"
+                    <input type="password" class="form-control form-control-lg" name="repassword" id="repassword"
                         placeholder="Re-enter password">
                 </div>
                 <button type="submit" class="btn btn-warning w-100 fw-bold py-2">SIGN UP</button>

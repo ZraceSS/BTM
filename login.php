@@ -1,3 +1,26 @@
+<?php
+include 'database.php';
+session_start();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = trim($_POST["username"]);
+    $password = $_POST["password"];
+
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt->execute([$username]);
+    $user = $stmt->fetch();
+
+    if ($user && password_verify($password, $user["password_hash"])) {
+        $_SESSION["user_id"] = $user["id"];
+        $_SESSION["username"] = $user["username"];
+        header("Location: index.php");
+        exit();
+    } else {
+        $error = "Invalid username or password.";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,14 +54,14 @@
     <div class="card p-4 shadow-lg bg-dark text-white" style="max-width: 400px; width: 100%; border-radius: 12px;">
       <h2 class="text-center text-warning fw-bold">Welcome Back</h2>
       <p class="text-center text-light">Log in to continue</p>
-      <form>
+      <form method="post">
         <div class="mb-3">
           <label for="username" class="form-label">Username</label>
-          <input type="text" class="form-control form-control-lg" id="username" placeholder="Enter your username">
+          <input type="text" class="form-control form-control-lg" name="username" id="username" placeholder="Enter your username">
         </div>
         <div class="mb-3">
           <label for="password" class="form-label">Password</label>
-          <input type="password" class="form-control form-control-lg" id="password" placeholder="Enter your password">
+          <input type="password" class="form-control form-control-lg" name="password" id="password" placeholder="Enter your password">
         </div>
         <div class="mb-3 text-end">
           <a href="#" class="text-warning small">Forgot Password?</a>
