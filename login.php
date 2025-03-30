@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Better Time Manager</title>
+  <title>Login | Better Time Manager</title>
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -13,11 +13,16 @@
   <link href="https://fonts.googleapis.com/css?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/styles.css">
+  
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 </head>
 
 <body>
+
   <?php include 'navbar.php'; ?>
+
   <!-- Background Image -->
   <div class="bg-image"></div>
 
@@ -40,7 +45,7 @@
         </div>
         <button type="submit" class="btn btn-warning w-100 fw-bold py-2">LOG IN</button>
       </form>
-      <p class="text-center mt-3">Don't have an account? <a href="#" class="text-warning">Sign Up</a></p>
+      <p class="text-center mt-3">Don't have an account? <a href="register.php" class="text-warning">Sign Up</a></p>
     </div>
   </div>
 
