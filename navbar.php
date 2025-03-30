@@ -4,12 +4,12 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-$is_logged_in = !isset($_SESSION['user']); // Check if user session exists
+$is_logged_in = isset($_SESSION['user']); // Check if user session exists
 ?>
 
 <!-- Bootstrap Navbar -->
 <nav class="navbar navbar-expand-lg px-4" style="background-color: #444;">
-    <a class="navbar-brand text-white fw-bold" href="#">BETTER</a>
+    <a class="navbar-brand text-white fw-bold" href="index.php">BETTER</a>
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="bi bi-list text-white"></span>

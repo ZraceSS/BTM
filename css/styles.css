@@ -90,3 +90,22 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+.hero {
+  height: 100vh;
+  background: url('../images/bg-home.jpg') no-repeat center center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  font-weight: 600;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
