@@ -35,8 +35,8 @@ session_start();
         <div class="hero-content text-center text-white">
             <h1>Welcome to <span class="text-warning">BETTER</span> Time Manager</h1>
             <p>Manage your time efficiently and improve your productivity.</p>
-            <div class="d-flex justify-content-center gap-3">
-                <a href="register.php" class="btn btn-warning btn-lg">Get Started</a>
+            <div class="d-flex justify-content-center gap-2">
+                <?php if(!isset($_SESSION["user_id"])){ echo "<a href='register.php' class='btn btn-warning btn-lg'>Get Started</a>"; } ?>
                 <a href="goldplan.php" class="btn btn-outline-light btn-lg">Gold Plan</a>
                 <a href="candela.php" class="btn btn-outline-light btn-lg">Candela</a>
             </div>

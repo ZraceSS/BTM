@@ -52,6 +52,19 @@ $nextYear = date('Y', strtotime("$year-$month-01 +1 month"));
     <div class="bg-image"></div>
 
 
+    <?php if (isset($_GET['deleted'])): ?>
+        <div class="alert alert-<?= $_GET['deleted'] == 'all' ? 'success' : 'danger' ?> text-center">
+            <?php
+            if ($_GET['deleted'] == 'all')
+                echo '✅ All tasks for this day were successfully removed!';
+            elseif ($_GET['deleted'] == 'none')
+                echo '⚠️ No tasks found to remove for this day.';
+            ?>
+        </div>
+    <?php endif; ?>
+
+
+
     <div class="container py-4 text-white">
         <h1 class="text-center text-warning fw-bold">Candela</h1>
 
@@ -141,8 +154,11 @@ $nextYear = date('Y', strtotime("$year-$month-01 +1 month"));
                             <a href="check_task.php?id=<?= $tasks_today[0]['id'] ?>&date=<?= $selectedDate ?>"
                                 class="btn btn-success">✅ Check</a>
                             <a href="edit_task.php?date=<?= $selectedDate ?>" class="btn btn-warning">✏️ Edit Plan</a>
-                            <a href="delete_task.php?id=<?= $tasks_today[0]['id'] ?>&date=<?= $selectedDate ?>"
-                                class="btn btn-danger">❌ Remove</a>
+                            <a href="delete_task.php?date=<?= $selectedDate ?>"
+                                onclick="return confirm('⚠️ Are you sure you want to remove ALL tasks for this day? This cannot be undone!');"
+                                class="btn btn-danger">
+                                ❌ Remove
+                            </a>
                         </div>
                     <?php else: ?>
                         <h3>No tasks for today!</h3>
