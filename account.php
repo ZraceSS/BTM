@@ -1,6 +1,5 @@
-<?php
-session_start();
-?>
+<?php include 'auth.php';?>
+<?php include 'database.php'; ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,10 +7,10 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home | Better Time Manager</title>
+    <title>Account Settings</title>
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -25,27 +24,26 @@ session_start();
 
 <body>
 
-    <!-- Include Navbar -->
     <?php include 'navbar.php'; ?>
 
     <!-- Background Image -->
     <div class="bg-image"></div>
-    <!-- Hero Section -->
-    <div class="hero">
-        <div class="hero-content text-center text-white">
-            <h1>Welcome to <span class="text-warning">BETTER</span> Time Manager</h1>
-            <p>Manage your time efficiently and improve your productivity.</p>
-            <div class="d-flex justify-content-center gap-3">
-                <a href="register.php" class="btn btn-warning btn-lg">Get Started</a>
-                <a href="goldplan.php" class="btn btn-outline-light btn-lg">Gold Plan</a>
-                <a href="candela.php" class="btn btn-outline-light btn-lg">Candela</a>
+
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="glass-box text-center p-4 text-white">
+            <h2 class="text-warning fw-bold mb-4">Setting</h2>
+            <div class="mb-3"><i class="bi bi-person-circle fs-1"></i></div>
+            <h4><?= $_SESSION['username']; ?></h4>
+            <div class="mt-4">
+                <p>🔔 Notification</p>
+                <a href="edit_profile.php" class="btn btn-outline-light mb-2 w-100">Edit Profile</a>
+                <a href="logout.php" class="btn btn-warning mb-2 w-100">Logout</a>
             </div>
         </div>
     </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 
 </html>

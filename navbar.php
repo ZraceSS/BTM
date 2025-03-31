@@ -1,8 +1,4 @@
 <?php
-// Start the session if not already started
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
 
 $is_logged_in = isset($_SESSION['user_id']); // Check if user session exists
 ?>
@@ -23,24 +19,20 @@ $is_logged_in = isset($_SESSION['user_id']); // Check if user session exists
                     <a class="nav-link dropdown-toggle text-white" href="#" id="featureDropdown" role="button"
                         data-bs-toggle="dropdown">FEATURE</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Candela</a></li>
-                        <li><a class="dropdown-item" href="#">Gold Plan</a></li>
-                        <li><a class="dropdown-item" href="#">Statistic</a></li>
+                        <li><a class="dropdown-item" href="candela.php">Candela</a></li>
+                        <li><a class="dropdown-item" href="goldplan.php">Gold Plan</a></li>
+                        <li><a class="dropdown-item" href="statistics.php">Statistic</a></li>
                     </ul>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#">ABOUT</a>
                 </li>
 
                 <!-- Account Dropdown -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-white" href="#" id="accountDropdown" role="button"
+                    <a class="nav-link dropdown-toggle text-white" id="accountDropdown" role="button"
                         data-bs-toggle="dropdown">
                         <i class="bi bi-person-circle"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">Setting</a></li>
+                        <li><a class="dropdown-item" href="account.php">Setting</a></li>
                         <li><a class="dropdown-item text-danger fw-bold" href="logout.php">Logout</a></li>
                     </ul>
                 </li>
