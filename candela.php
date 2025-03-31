@@ -113,23 +113,39 @@ $nextYear = date('Y', strtotime("$year-$month-01 +1 month"));
             <div class="col-md-5">
                 <div class="glass-box p-4">
                     <?php if ($tasks_today): ?>
-                        <h3>📅 <?= htmlspecialchars($tasks_today[0]['title']) ?></h3>
-                        <div class="mt-4">
-                            <h5>📋 To Do List</h5>
+                        <h3>📅 Event on <?= date('F d, Y', strtotime($selectedDate)) ?></h3>
+
+                        <div class="mt-3">
+                            <h5>🗒️ To-Do List</h5>
                             <ul>
                                 <?php foreach ($tasks_today as $task): ?>
-                                    <li><?= htmlspecialchars($task['description']) ?></li>
+                                    <?php if ($task['list_type'] === 'todo'): ?>
+                                        <li><?= htmlspecialchars($task['description']) ?></li>
+                                    <?php endif; ?>
                                 <?php endforeach; ?>
                             </ul>
                         </div>
-                        <div class="mt-3 text-center">
-                            <a href="check_task.php?id=<?= $tasks_today[0]['id'] ?>&date=<?= $selectedDate ?>" class="btn btn-success">✅ Check</a>
-                            <a href="edit_task.php?id=<?= $tasks_today[0]['id'] ?>" class="btn btn-warning">✏️ Edit Plan</a>
-                            <a href="delete_task.php?id=<?= $tasks_today[0]['id'] ?>&date=<?= $selectedDate ?>" class="btn btn-danger">❌ Remove</a>
+
+                        <div class="mt-3">
+                            <h5>⭐ Gold Plan</h5>
+                            <ul>
+                                <?php foreach ($tasks_today as $task): ?>
+                                    <?php if ($task['list_type'] === 'gold'): ?>
+                                        <li><?= htmlspecialchars($task['description']) ?></li>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+
+                        <div class="mt-4 text-center">
+                            <a href="check_task.php?id=<?= $tasks_today[0]['id'] ?>&date=<?= $selectedDate ?>"
+                                class="btn btn-success">✅ Check</a>
+                            <a href="edit_task.php?date=<?= $selectedDate ?>" class="btn btn-warning">✏️ Edit Plan</a>
+                            <a href="delete_task.php?id=<?= $tasks_today[0]['id'] ?>&date=<?= $selectedDate ?>"
+                                class="btn btn-danger">❌ Remove</a>
                         </div>
                     <?php else: ?>
-                        <h3>📅 No Event</h3>
-                        <p class="text-center mt-4">Haven’t To-Do List & Gold plan for this day</p>
+                        <h3>No tasks for today!</h3>
                         <div class="mt-3 text-center">
                             <a href="make_task.php?date=<?= $selectedDate ?>" class="btn btn-success">✅ Make Plan</a>
                         </div>

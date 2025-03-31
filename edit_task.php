@@ -2,24 +2,15 @@
 include 'auth.php';
 include 'database.php';
 
-$id = $_GET['id'];
 $user_id = $_SESSION['user_id'];
+$date = $_GET['date'];
 
-$stmt = $pdo->prepare("SELECT * FROM tasks WHERE id = ? AND user_id = ?");
-$stmt->execute([$id, $user_id]);
-$task = $stmt->fetch();
+$stmt = $pdo->prepare("SELECT * FROM tasks WHERE user_id=? AND due_date=?");
+$stmt->execute([$user_id, $date]);
+$tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $title = $_POST['title'];
-    $desc = $_POST['desc'];
-    $date = $_POST['date'];
-
-    $stmt = $pdo->prepare("UPDATE tasks SET title=?, description=?, due_date=? WHERE id=? AND user_id=?");
-    $stmt->execute([$title, $desc, $date, $id, $user_id]);
-
-    header("Location: candela.php");
-    exit();
-}
+$todo_tasks = implode("\n", array_column(array_filter($tasks, fn($t) => $t['list_type'] == 'todo'), 'description'));
+$gold_tasks = implode("\n", array_column(array_filter($tasks, fn($t) => $t['list_type'] == 'gold'), 'description'));
 ?>
 
 <!DOCTYPE html>
@@ -48,18 +39,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php include 'navbar.php'; ?>
     <!-- Background Image -->
     <div class="bg-image"></div>
-    
-    <div class="d-flex justify-content-center align-items-center vh-100">
-        <div class="glass-box text-white p-4" style="width: 400px;">
-            <h2 class="text-warning text-center">Edit Task</h2>
-            <form method="POST">
-                <input name="title" class="form-control mb-3" value="<?= $task['title']; ?>" required>
-                <textarea name="desc" class="form-control mb-3"><?= $task['description']; ?></textarea>
-                <input name="date" type="date" class="form-control mb-3" value="<?= $task['due_date']; ?>" required>
-                <div class="d-flex justify-content-between">
-                    <button type="submit" class="btn btn-success w-50 me-2">Update</button>
-                    <a href="candela.php" class="btn btn-danger w-50">Cancel</a>
+
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="glass-box text-center p-4 text-white" style="width:600px;">
+            <h1 class="text-warning">Edit-Task</h1>
+            <form method="POST" action="process_edit_task.php">
+                <input type="hidden" name="due_date" value="<?= $date ?>">
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <h5>To-Do List</h5>
+                        <textarea name="todo_list" class="form-control"
+                            rows="5"><?= htmlspecialchars($todo_tasks) ?></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="text-warning">Gold-Plan List</h5>
+                        <textarea name="gold_list" class="form-control"
+                            rows="5"><?= htmlspecialchars($gold_tasks) ?></textarea>
+                    </div>
                 </div>
+                <button type="submit" class="btn btn-success mt-4">Done</button>
+                <a href="candela.php" class="btn btn-danger mt-4">Cancel</a>
             </form>
         </div>
     </div>

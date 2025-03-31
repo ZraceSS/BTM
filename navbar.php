@@ -38,12 +38,8 @@ $is_logged_in = isset($_SESSION['user_id']); // Check if user session exists
                 </li>
             
             <?php else: ?>
-                <!-- Non-Logged-In Navbar -->
                 <li class="nav-item">
-                    <a href="#" class="btn btn-outline-light me-2">ABOUT</a>
-                </li>
-                <li class="nav-item">
-                    <a href="login.php" class="btn btn-warning me-2">LOG IN</a>
+                    <a href="login.php" class="btn btn-light me-2">LOG IN</a>
                 </li>
                 <li class="nav-item">
                     <a href="register.php" class="btn btn-light">SIGN UP</a>
