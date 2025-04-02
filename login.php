@@ -54,6 +54,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <!-- Background Image -->
   <div class="bg-image"></div>
 
+  <?php if (isset($_GET['signup'])): ?>
+        <div class="alert alert-<?= $_GET['signup']; ?> text-center">
+            <?php
+            if ($_GET['signup'] == 'success')
+                echo '✅ Register success!';
+            ?>
+        </div>
+    <?php endif; ?>
+
+
   <!-- Login Form -->
   <div class="container d-flex justify-content-center align-items-center min-vh-100">
     <div class="card p-4 shadow-lg bg-dark text-white" style="max-width: 400px; width: 100%; border-radius: 12px;">
@@ -62,11 +72,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <form method="post">
         <div class="mb-3">
           <label for="username" class="form-label">Username</label>
-          <input type="text" class="form-control form-control-lg" name="username" id="username" placeholder="Enter your username">
+          <input type="text" class="form-control form-control-lg" name="username" id="username" placeholder="Enter your username" required>
         </div>
         <div class="mb-3">
           <label for="password" class="form-label">Password</label>
-          <input type="password" class="form-control form-control-lg" name="password" id="password" placeholder="Enter your password">
+          <input type="password" class="form-control form-control-lg" name="password" id="password" placeholder="Enter your password" required>
         </div>
         <div class="mb-3 text-end">
           <a href="#" class="text-warning small">Forgot Password?</a>

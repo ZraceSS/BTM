@@ -13,8 +13,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
     $repassword = password_hash($_POST["repassword"], PASSWORD_DEFAULT);
 
-    if ($repassword != $password) {
-        header("Location: register.php?signup=fail");
+
+    if ($_POST["password"] != $_POST["repassword"]) {
+        header("Location: register.php?signup=warning&returnText=Password miss match.");
     }
 
     try {
@@ -55,6 +56,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Background Image -->
     <div class="bg-image"></div>
 
+    <?php if (isset($_GET['signup']) && isset($_GET['returnText'])): ?>
+        <div class="alert alert-<?= $_GET['signup']; ?> text-center">
+            <?php
+            if ($_GET['signup'] == 'warning')
+                echo $_GET['returnText'];
+            ?>
+        </div>
+    <?php endif; ?>
+
     <!-- Sign-Up Form -->
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
         <div class="card p-4 shadow-lg bg-dark text-white" style="max-width: 400px; width: 100%; border-radius: 12px;">
@@ -63,21 +73,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" class="form-control form-control-lg" name="username" id="username"
-                        placeholder="Choose a username">
+                        placeholder="Choose a username" required>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control form-control-lg" name="email" id="email" placeholder="Enter your email">
+                    <input type="email" class="form-control form-control-lg" name="email" id="email" placeholder="Enter your email" required>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <input type="password" class="form-control form-control-lg" name="password" id="password"
-                        placeholder="Enter your password">
+                        placeholder="Enter your password" required>
                 </div>
                 <div class="mb-3">
                     <label for="repassword" class="form-label">Confirm Password</label>
                     <input type="password" class="form-control form-control-lg" name="repassword" id="repassword"
-                        placeholder="Re-enter password">
+                        placeholder="Re-enter password" required>
                 </div>
                 <button type="submit" class="btn btn-warning w-100 fw-bold py-2">SIGN UP</button>
             </form>

@@ -105,12 +105,21 @@ $nextYear = date('Y', strtotime("$year-$month-01 +1 month"));
 
                         for ($day = 1; $day <= $daysInMonth; $day++) {
                             $dateStr = sprintf('%04d-%02d-%02d', $year, $month, $day);
-                            $hasTask = in_array($dateStr, $task_dates);
                             $selected = ($dateStr === $selectedDate) ? 'selected-date' : '';
-                            $taskIcon = $hasTask ? '📑' : '';
-                            echo "<td class='$selected' onclick=\"location='?date=$dateStr'\">$day $taskIcon</td>";
-                            if (++$dayCounter % 7 == 0)
-                                echo "</tr><tr>";
+                        
+                            // Check if there are any tasks for this date
+                            $stmt = $pdo->prepare("SELECT COUNT(*) as total, SUM(is_done) as done FROM tasks WHERE user_id=? AND due_date=?");
+                            $stmt->execute([$user_id, $dateStr]);
+                            $taskStats = $stmt->fetch();
+                        
+                            $hasTasks = $taskStats['total'] > 0;
+                            $allDone = $taskStats['total'] > 0 && $taskStats['total'] == $taskStats['done'];
+                        
+                            $icon = $allDone ? '✅' : ($hasTasks ? '📑' : '');
+                        
+                            echo "<td class='$selected' onclick=\"location='?date=$dateStr&month=$month&year=$year'\">$day $icon</td>";
+                        
+                            if (++$dayCounter % 7 == 0) echo "</tr><tr>";
                         }
 
                         while ($dayCounter % 7 != 0) {
@@ -130,29 +139,54 @@ $nextYear = date('Y', strtotime("$year-$month-01 +1 month"));
 
                         <div class="mt-3">
                             <h5>🗒️ To-Do List</h5>
-                            <ul>
+                            <ul class="list-group">
                                 <?php foreach ($tasks_today as $task): ?>
                                     <?php if ($task['list_type'] === 'todo'): ?>
-                                        <li><?= htmlspecialchars($task['description']) ?></li>
+                                        <li
+                                            class="list-group-item d-flex justify-content-between align-items-center bg-transparent text-white border-light">
+                                            <span>
+                                                <?= htmlspecialchars($task['description']) ?>
+                                                <?php if ($task['is_done']): ?>
+                                                    ✅
+                                                <?php endif; ?>
+                                            </span>
+                                            <a href="check_task.php?id=<?= $task['id'] ?>&date=<?= $selectedDate ?>"
+                                                class="btn btn-sm btn-success">
+                                                <?= $task['is_done'] ? 'Undo' : 'Check' ?>
+                                            </a>
+                                        </li>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             </ul>
                         </div>
+
 
                         <div class="mt-3">
                             <h5>⭐ Gold Plan</h5>
-                            <ul>
+                            <ul class="list-group">
                                 <?php foreach ($tasks_today as $task): ?>
                                     <?php if ($task['list_type'] === 'gold'): ?>
-                                        <li><?= htmlspecialchars($task['description']) ?></li>
+                                        <li
+                                            class="list-group-item d-flex justify-content-between align-items-center bg-transparent text-white border-light">
+                                            <span>
+                                                <?= htmlspecialchars($task['description']) ?>
+                                                <?php if ($task['is_done']): ?>
+                                                    ✅
+                                                <?php endif; ?>
+                                            </span>
+                                            <a href="check_task.php?id=<?= $task['id'] ?>&date=<?= $selectedDate ?>"
+                                                class="btn btn-sm btn-success">
+                                                <?= $task['is_done'] ? 'Undo' : 'Check' ?>
+                                            </a>
+                                        </li>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             </ul>
                         </div>
 
+
+
                         <div class="mt-4 text-center">
-                            <a href="check_task.php?id=<?= $tasks_today[0]['id'] ?>&date=<?= $selectedDate ?>"
-                                class="btn btn-success">✅ Check</a>
                             <a href="edit_task.php?date=<?= $selectedDate ?>" class="btn btn-warning">✏️ Edit Plan</a>
                             <a href="delete_task.php?date=<?= $selectedDate ?>"
                                 onclick="return confirm('⚠️ Are you sure you want to remove ALL tasks for this day? This cannot be undone!');"
