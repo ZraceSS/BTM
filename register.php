@@ -16,6 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($_POST["password"] != $_POST["repassword"]) {
         header("Location: register.php?signup=warning&returnText=Password miss match.");
+        exit();
     }
 
     try {
